@@ -1,8 +1,19 @@
 import React from 'react'
 import classes from "./item.module.css"
 import AmountForm from './Form/AmountForm';
+import { useContext } from 'react';
+import { CartContext } from '../../../store/cart-context';
 
 export default function MenuItem(props) {
+       const ctx = useContext(CartContext)
+       const addToCartHandler = (amount) => {
+              ctx.addItem({
+                     id: props.item.id,
+                     name: props.item.name,
+                     amount: amount,
+                     price: props.price
+              })
+       }
        return (
               <div className={classes.item}>
                      <div>
@@ -18,7 +29,7 @@ export default function MenuItem(props) {
                             </p>
                      </div>
                      <div>
-                            <AmountForm handleClick={props.handleClick} />
+                            <AmountForm addToCart={addToCartHandler} id={props.item.id} />
                      </div>
               </div>
        )

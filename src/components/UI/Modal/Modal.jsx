@@ -1,15 +1,25 @@
 import React from 'react'
 import classes from './modal.module.css'
-import Card from './../Card/Card';
+import { createPortal } from 'react-dom';
 
-export default function Modal() {
+export const Backdrop = (props) => {
+       return <div onClick={props.onHideCart} className={classes.backdrop} />
+};
+export function ModalOverlay(props) {
        return (
               <div className={classes.modal}>
                      <div className={classes['modal-content']}>
-                            <Card title='Hello' style={{ margin: 'auto' }}>
-                                   Hello
-                            </Card>
+                            {props.children}
                      </div>
               </div>
+       )
+}
+const portalElement = document.getElementById("overlays")
+export default function Modal(props) {
+       return (
+              <>
+                     {createPortal(<Backdrop onHideCart={props.onHideCart} />, portalElement)}
+                     {createPortal(<ModalOverlay>{props.children}</ModalOverlay>, portalElement)}
+              </>
        )
 }
