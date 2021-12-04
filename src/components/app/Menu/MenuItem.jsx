@@ -9,9 +9,9 @@ export default function MenuItem(props) {
        const addToCartHandler = (amount) => {
               ctx.addItem({
                      id: props.item.id,
-                     name: props.item.name,
+                     name: props.item.title,
                      amount: amount,
-                     price: props.price
+                     price: props.item.price
               })
        }
        return (

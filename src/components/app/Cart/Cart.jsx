@@ -1,25 +1,44 @@
 import React from 'react'
 import Modal from '../../UI/Modal/Modal'
 import classes from './cart.module.css'
+import { useContext } from 'react'
+import { CartContext } from './../../../store/cart-context';
+import CartItem from './CartItem/CartItem';
 
 export default function Cart(props) {
+       const cartItemRemoveHandler = () => {
+
+       }
+       const cartItemAddHandler = () => {
+
+       }
+       const ctx = useContext(CartContext)
        const cartItems = (
               <ul>
-                     {[{ id: 1, name: 'sushi', amount: 2, price: 12.99 }].map((item) => {
-                            return <li key={item.id}>{item.name}</li>
+                     {ctx.items.map((item) => {
+                            return <CartItem
+                                   key={item.id}
+                                   name={item.name}
+                                   amount={item.amount}
+                                   price={item.price}
+                                   onRemove={cartItemRemoveHandler.bind(null, item.id)}
+                                   onAdd={cartItemAddHandler.bind(null, item)}
+                            />
                      })}
               </ul>
        )
+       const totalAmount = `$${ctx.totalAmount.toFixed(2)}`
+       const hasItems = ctx.items.length > 0
        return (
               <Modal onHideCart={props.onHideCart}>
                      {cartItems}
                      <div className={classes.total}>
                             <span>Total Amount</span>
-                            <span>35.62</span>
+                            <span>{totalAmount}</span>
                      </div>
                      <div className={classes.actions}>
                             <button onClick={props.onHideCart} className={classes['button--alt']}>Close</button>
-                            <button className={classes.button}>Order</button>
+                            {hasItems && <button className={classes.button}>Order</button>}
                      </div>
               </Modal>
        )
