@@ -31,6 +31,23 @@ const cartReducer = (state, action) => {
                      totalAmount: updatedTotalAmount,
               };
        }
+       else if (action.type === 'REMOVE') {
+              const existingCartItemIndex = state.items.findIndex((item) => action.id === item.id)
+              const existingCartItem = state.items[existingCartItemIndex]
+              const updatedTotalAmount = state.totalAmount - existingCartItem.price
+              let updatedItems;
+              if (existingCartItem.amount === 1) {
+                     updatedItems = state.items.filter((item) => item.id !== action.id)
+              }
+              else if (existingCartItem.amount > 1) {
+                     updatedItems = [...state.items]
+                     updatedItems[existingCartItemIndex] = { ...existingCartItem, amount: existingCartItem.amount - 1 }
+              }
+              return {
+                     items: updatedItems,
+                     totalAmount: updatedTotalAmount
+              }
+       }
        return defaultCartState;
 }
 export const CartContext = React.createContext()
@@ -39,7 +56,9 @@ const CartProvider = props => {
        const addItemToCart = (item) => {
               dispatchCartAction({ type: 'ADD', item: item })
        }
-       const removeItemFromCart = id => { }
+       const removeItemFromCart = (id) => {
+              dispatchCartAction({ type: 'REMOVE', id: id })
+       }
        const cartContext = {
               items: cartState.items,
               totalAmount: cartState.totalAmount,

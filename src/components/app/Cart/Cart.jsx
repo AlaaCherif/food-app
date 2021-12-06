@@ -6,13 +6,19 @@ import { CartContext } from './../../../store/cart-context';
 import CartItem from './CartItem/CartItem';
 
 export default function Cart(props) {
-       const cartItemRemoveHandler = () => {
-
-       }
-       const cartItemAddHandler = () => {
-
-       }
        const ctx = useContext(CartContext)
+       const cartItemRemoveHandler = (id) => {
+              ctx.removeItem(id)
+       }
+       const cartItemAddHandler = (item) => {
+              ctx.addItem(
+                     {
+                            ...item,
+                            amount: 1
+                     }
+              )
+       }
+
        const cartItems = (
               <ul>
                      {ctx.items.map((item) => {
