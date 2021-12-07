@@ -47,6 +47,7 @@ const cartReducer = (state, action) => {
                      items: updatedItems,
                      totalAmount: updatedTotalAmount
               }
+
        }
        return defaultCartState;
 }
@@ -59,11 +60,15 @@ const CartProvider = props => {
        const removeItemFromCart = (id) => {
               dispatchCartAction({ type: 'REMOVE', id: id })
        }
+       const clearCart = () => {
+              dispatchCartAction({ type: 'CLEAR' })
+       }
        const cartContext = {
               items: cartState.items,
               totalAmount: cartState.totalAmount,
               addItem: addItemToCart,
-              removeItem: removeItemFromCart
+              removeItem: removeItemFromCart,
+              clearCart
        }
        return <CartContext.Provider value={cartContext}>{props.children}</CartContext.Provider>
 }
